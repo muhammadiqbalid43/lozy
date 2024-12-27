@@ -1,6 +1,6 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"  // ini akan membuat file database lokal
 }
  
 generator client {
@@ -26,12 +26,12 @@ model Account {
   type              String
   provider          String
   providerAccountId String @map("provider_account_id")
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String? //@db.Text
+  access_token      String? //@db.Text
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String? //@db.Text
   session_state     String?
  
   createdAt DateTime @default(now())
