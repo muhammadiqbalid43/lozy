@@ -15,11 +15,11 @@ import {
 } from "@/schema/first-onboarding-schema";
 import { ActionType } from "@/types/onboarding";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { User } from "lucide-react";
 import { useForm } from "react-hook-form";
+import AddUserImage from "../add-user-image";
 
 export default function FirstStep() {
-  const { currentStep, name, dispatch } = useOnboardingForm();
+  const { currentStep, profileImage, name, dispatch } = useOnboardingForm();
 
   const form = useForm<FirstOnboardingSchema>({
     resolver: zodResolver(firstOnboardingSchema),
@@ -29,7 +29,6 @@ export default function FirstStep() {
   });
 
   const onSubmit = (data: FirstOnboardingSchema) => {
-    console.log(data);
     dispatch({ type: ActionType.NAME, payload: data.name! });
     dispatch({ type: ActionType.CHANGE_SITE, payload: currentStep + 1 });
   };
@@ -40,10 +39,8 @@ export default function FirstStep() {
       </h2>
       <div className="max-w-md w-full space-y-8">
         <div className="w-full flex flex-col justify-center items-center gap-2">
-          <p>First Step Photo</p>
-          <div>
-            <User />
-          </div>
+          <p>Add photo</p>
+          <AddUserImage profileImage={profileImage} />
         </div>
 
         <Form {...form}>
