@@ -2,7 +2,6 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { getServerSession, NextAuthOptions } from "next-auth";
 import db from "./db";
 import { Adapter } from "next-auth/adapters";
-import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
 import bcrypt from "bcrypt";
 
@@ -16,10 +15,6 @@ export const authOptions: NextAuthOptions = {
   },
   adapter: PrismaAdapter(db) as Adapter,
   providers: [
-    GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-    }),
     CredentialsProvider({
       name: "credentials",
       credentials: {
@@ -64,6 +59,8 @@ export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session, token }) {
+      console.log("Token", token);
+
       if (token) {
         session.user.id = token.id;
         session.user.name = token.name;
