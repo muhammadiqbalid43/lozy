@@ -11,13 +11,15 @@ model User {
   id            String          @id @default(cuid())
   name          String?
   username      String @unique
+  surname       String?
   email         String          @unique
   emailVerified DateTime?
   hashedPassword String?
   image         String?
+  completedOnboarding Boolean @default(false)
   accounts      Account[]
   sessions      Session[]
- 
+  createdWorkspaces Workspace[] @relation("CreatedBy")
 }
  
 model Account {
@@ -58,4 +60,33 @@ model VerificationToken {
  
   @@id([identifier, token])
 }
+
+// enum UserPermission {
+//   ADMIN
+//   CAN_EDIT
+//   READ_ONLY
+//   OWNER
+// }
+
+// enum UseCase {
+//   WORK
+//   STUDY
+//   PERSONAL_USE
+// }
+
+model Workspace {
+  id String @id @default(cuid())
+  name String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  creatorId String?
+  Creator User? @relation("CreatedBy", fields: [creatorId], references: [id], onDelete: Cascade)
+
+  @@index([creatorId])
+}
+
+// model Notification {
+//   id String @id @default(cuid())
+//   newUserRole UserPermission?
+// }
  
